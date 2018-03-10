@@ -34,7 +34,7 @@ flickerblocked: $@.c
 	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
 
 install: $(list_of_targets)
-	sudo cp $(list_of_targets) /usr/local/bin/
+	sudo cp -v $(list_of_targets) /usr/local/bin/
 
 clean:
 	rm -fv a.out core
