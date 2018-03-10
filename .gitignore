@@ -1,4 +1,13 @@
 .DS_Store
 
+runlamp
+turn_off_run_lamp
+turn_on_fault_lamp
+turn_off_fault_lamp
+turn_on_traffic_lamp
+turn_off_traffic_lamp
+flickertraffic
+flickerblocked
+
 a.out
 core
