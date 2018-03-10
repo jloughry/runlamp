@@ -17,7 +17,7 @@
 #define PHOTODIODE_B 22
 #define LASER_B 22
 
-#define ON_TIME 100000 /* microseconds */
+#define ON_TIME 500000 /* microseconds */
 
 int main(void) {
 	gpio_handle_t handle;
