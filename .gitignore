@@ -2,6 +2,8 @@
 
 runlamp
 turn_off_run_lamp
+waitlamp
+turn_off_wait_lamp
 turn_on_fault_lamp
 turn_off_fault_lamp
 turn_on_traffic_lamp
