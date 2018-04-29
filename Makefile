@@ -2,6 +2,8 @@ CFLAGS = -Wall -Wextra
 LFLAGS = -lgpio
 CC = clang
 
+.PHONY: clean
+
 list_of_targets = runlamp turn_off_run_lamp \
 	waitlamp turn_off_wait_lamp \
 	turn_on_fault_lamp turn_off_fault_lamp \
