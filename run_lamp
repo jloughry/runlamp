@@ -1,0 +1,37 @@
+#!/bin/sh -
+# PROVIDE: run_lamp
+# REQUIRE: FILESYSTEMS
+# KEYWORD: nojail shutdown
+
+. /etc/rc.subr
+
+name="run_lamp"
+rcvar="${name}_enable"
+stop_cmd="${name}_stop"
+start_cmd="${name}_start"
+
+run_lamp_start()
+{
+    logger ${name}-start
+    (/usr/local/bin/runlamp) &
+    (/usr/local/bin/shutdown_switch) &
+
+    (/usr/local/bin/flickertraffic) &
+    (/usr/local/bin/flickerblocked) &
+}
+
+
+run_lamp_stop()
+{
+    logger ${name}-stop
+    killall runlamp flickertraffic flickerblocked shutdown_switch
+
+    /usr/local/bin/turn_off_run_lamp
+    /usr/local/bin/turn_off_traffic_lamp
+    /usr/local/bin/turn_off_fault_lamp
+    /usr/local/bin/turn_off_blocked_lamp
+}
+
+load_rc_config $name
+run_rc_command "$@"
+
