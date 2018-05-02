@@ -10,6 +10,10 @@ list_of_targets = runlamp turn_off_run_lamp \
 	turn_on_traffic_lamp turn_off_traffic_lamp \
 	flickertraffic flickerblocked shutdown_switch
 
+running_targets = runlamp shutdown_switch flickertraffic flickerblocked
+
+rc_script = /etc/rc.d/run_lamp
+
 all: $(list_of_targets)
 
 runlamp: $@.c
@@ -46,7 +50,9 @@ shutdown_switch: $@.c
 	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
 
 install: $(list_of_targets)
+	-killall $(running_targets)
 	cp -v $(list_of_targets) /usr/local/bin/
+	cp -v run_lamp $(rc_script)
 
 clean:
 	rm -fv a.out core
