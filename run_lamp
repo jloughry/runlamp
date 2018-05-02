@@ -30,6 +30,7 @@ run_lamp_stop()
     /usr/local/bin/turn_off_traffic_lamp
     /usr/local/bin/turn_off_fault_lamp
     /usr/local/bin/turn_off_blocked_lamp
+    /usr/local/bin/turn_off_wait_lamp
 }
 
 load_rc_config $name
