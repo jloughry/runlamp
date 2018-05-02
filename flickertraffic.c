@@ -17,7 +17,8 @@
 #define PHOTODIODE_B 22
 #define LASER_B 22
 
-#define ON_TIME 50000 /* microseconds */
+#define ON_TIME 50000 // microseconds; twentieth of a second
+#define MEAN_TIME_BETWEEN_FLASHES 2000000 // microseconds; two seconds
 
 int main(void) {
 	gpio_handle_t handle;
@@ -31,7 +32,7 @@ int main(void) {
 		gpio_pin_high(handle, TRAFFIC);
 		usleep(ON_TIME);
 		gpio_pin_low(handle, TRAFFIC);
-		usleep(random() % 1000000);
+		usleep(random() % MEAN_TIME_BETWEEN_FLASHES);
 	}
 	gpio_close(handle);
 
