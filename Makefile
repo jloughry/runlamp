@@ -8,7 +8,7 @@ list_of_targets = runlamp turn_off_run_lamp \
 	waitlamp turn_off_wait_lamp \
 	turn_on_fault_lamp turn_off_fault_lamp \
 	turn_on_traffic_lamp turn_off_traffic_lamp \
-	flickertraffic flickerblocked
+	flickertraffic flickerblocked shutdown_switch
 
 all: $(list_of_targets)
 
@@ -40,6 +40,9 @@ flickertraffic: $@.c
 	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
 
 flickerblocked: $@.c
+	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
+
+shutdown_switch: $@.c
 	$(CC) $(CFLAGS) -o $@ $< $(LFLAGS)
 
 install: $(list_of_targets)

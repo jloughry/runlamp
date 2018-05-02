@@ -9,4 +9,5 @@
 #define LASER_A       4
 #define PHOTODIODE_B 22
 #define LASER_B      22
+#define SHUTDOWN_SW  24
 
