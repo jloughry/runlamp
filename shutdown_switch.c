@@ -34,12 +34,12 @@ int main(void) {
 
     // This one is the LED.
     gpio_pin_output(handle, WAIT);
-	gpio_pin_low(handle, WAIT); // Turn the WAIT lamp off to begin with.
+    gpio_pin_low(handle, WAIT); // Turn the WAIT lamp off to begin with.
 
     gpio_value_t switch_state = 0;
 
     for (;;) {
-		const int tenth_of_a_second = 100000; // microseconds
+        const int tenth_of_a_second = 100000; // microseconds
 
         switch_state = gpio_pin_get(handle, SHUTDOWN_SW);
 
@@ -47,8 +47,8 @@ int main(void) {
             case SWITCH_OPEN:
                 break;
             case SWITCH_CLOSED:
-				start_flashing_the_WAIT_light();
-                system ("shutdown -h now");
+                system ("/sbin/shutdown -h now"); // do this first, because
+                start_flashing_the_WAIT_light(); // never returns
                 break;
             default:
                 printf ("Unknown switch state: %d\n", switch_state);
@@ -56,21 +56,21 @@ int main(void) {
         }
         usleep(tenth_of_a_second); // Poll the switch this often.
     }
-	// We should never actually get here.
+    // We should never actually get here.
     gpio_close(handle);
 
     return(EXIT_SUCCESS);
 }
 
 void start_flashing_the_WAIT_light(void) {
-	const int flash_rate = 333333; // microseconds
+    const int flash_rate = 333333; // microseconds
 
-	for (;;) {
-		gpio_pin_high(handle, WAIT);
-		usleep(flash_rate);
-		gpio_pin_low(handle, WAIT);
-		usleep(flash_rate);
-	}
-	// At least for now, this function never returns.
+    for (;;) {
+        gpio_pin_high(handle, WAIT);
+        usleep(flash_rate);
+        gpio_pin_low(handle, WAIT);
+        usleep(flash_rate);
+    }
+    // At least for now, this function never returns.
 }
 
