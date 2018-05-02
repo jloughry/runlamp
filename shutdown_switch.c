@@ -48,6 +48,7 @@ int main(void) {
                 break;
             case SWITCH_CLOSED:
 				start_flashing_the_WAIT_light();
+                system ("shutdown -h now");
                 break;
             default:
                 printf ("Unknown switch state: %d\n", switch_state);
