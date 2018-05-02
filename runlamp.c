@@ -10,7 +10,7 @@
 #include "gpio_pin_numbers.h"
 
 #define PERIOD 1000000 /* microseconds */
-@define WHICH_LAMP RUN
+#define WHICH_LAMP RUN
 
 int main(void) {
 	gpio_handle_t handle;
