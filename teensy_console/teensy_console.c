@@ -1,10 +1,20 @@
+#include <string.h>
+
 int main(void)
 {
     uint8_t c;
     const int max = 1000;
     char string[max];
+    char first_string[] = "The operating system has halted";
+    char second_string[] = "Please press any key to reboot";
 
-    CPU_PRESCALE(0);  // run at 16 MHz
+    enum States {
+        on_steady,
+        fast_blinking,
+        slow_flash,
+    } state = on_steady;
+
+    CPU_PRESCALE(0);  // run at ?? MHz (48?)
 
     // Turn the LED on.
 
@@ -17,7 +27,7 @@ int main(void)
             string[i++] = c;
             string[i++] = '\0';
             if ('\n' == c) {
-                if (!strncmp(string, "System Halted\n")) {
+                if (!strncmp(string, "The operating system has halted.\n")) {
                     // Turn the LED off.
                     break;
                 }
@@ -27,3 +37,4 @@ int main(void)
     }
     return 0;
 }
+
