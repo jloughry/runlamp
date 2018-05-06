@@ -12,20 +12,21 @@ int main(void)
     char first_string[] = "The operating system has halted";
     char second_string[] = "Please press any key to reboot";
 
-    /* The state machine begins in the on_steady state, turns on
-       the LED, and begins reading characters from the UART. When
-       it sees a newline, it compares the string to a constant value
-       and if it finds a match, transitions to the fast_blinking
+    /* The state machine begins in the LED_ON state, turns on
+       the LED, and begins reading characters from the UART.
+       When it sees a newline, it compares the string to a constant
+       value and if it finds a match, transitions to the LED_OFF
        state. It keeps on looking at the UART, and if it sees any
-       other activity there, it transitions to the slow_flash state;
-       from the slow_flash state, it may transition back to the
-       fast_blinking state. */
+       other activity there, it transitions back to the LED_ON
+       state. Actually, there are two constant value strings, so
+       it's a bit more complicated than that, but I'm going to
+       implement it naïvely first and see if that works acceptably
+       well. */
 
-    enum States {
-        on_steady,
-        fast_blinking,
-        slow_flash,
-    } state = on_steady;
+    enum states {
+        LED_ON,
+        LED_OFF,
+    } state = LED_ON;
 
     CPU_PRESCALE(0);  // run at ?? MHz (48?)
 
