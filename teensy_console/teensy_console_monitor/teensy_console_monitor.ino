@@ -9,8 +9,8 @@
 */
 
 // Function prototypes.
-void turn_LED_on(void);
-void turn_LED_off(void);
+void turn_LEDs_on(void);
+void turn_LEDs_off(void);
 void check_for_overflow_of_string(void);
 void update_state_machine(void);
 
@@ -27,14 +27,16 @@ enum states {
   third_target_seen,  // Looking for a blank line, i.e., "\r\n".
 } state = initial_state;
 
-const int LED = 13; // in-built LED; change this to a GPIO pin for use.
+const int LED_1 = 2;  // external LED connected to pin 2
+const int LED_2 = 13; // in-built LED
 
 // This function is predefined by Arduino.
 void setup() {
-  pinMode(LED, OUTPUT);
+  pinMode(LED_1, OUTPUT);
+  pinMode(LED_2, OUTPUT);
   UART.begin(115200); // Set the speed to 115,200 bits per second (8,N,1).
   string[i] = '\0';
-  turn_LED_on();
+  turn_LEDs_on();
 }
 
 // This function is predefined by Arduino.
@@ -53,12 +55,14 @@ void loop() {
   }
 }
 
-void turn_LED_on(void) {
-  digitalWrite(LED, HIGH);
+void turn_LEDs_on(void) {
+  digitalWrite(LED_1, HIGH);
+  digitalWrite(LED_2, HIGH);
 }
 
-void turn_LED_off(void) {
-  digitalWrite(LED, LOW);
+void turn_LEDs_off(void) {
+  digitalWrite(LED_1, LOW);
+  digitalWrite(LED_2, LOW);
 }
 
 void check_for_overflow_of_string(void) {
@@ -86,7 +90,7 @@ void update_state_machine(void) {
     case second_target_seen:
       if (!strcmp(string, "\r\n")) {
         state = third_target_seen;
-        turn_LED_off();
+        turn_LEDs_off();
       }
       else {
         state = initial_state;
@@ -94,7 +98,7 @@ void update_state_machine(void) {
       break;
     case third_target_seen:
       state = initial_state;
-      turn_LED_on();
+      turn_LEDs_on();
       break;
     default:
       state = initial_state;
