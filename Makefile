@@ -64,3 +64,6 @@ clean:
 	rm -fv a.out core
 	rm -fv $(list_of_targets)
 
+changes:
+	git diff
+
