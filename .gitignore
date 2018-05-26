@@ -1,8 +1,10 @@
 .DS_Store
 
 runlamp
+turn_on_run_lamp
 turn_off_run_lamp
 waitlamp
+turn_on_wait_lamp
 turn_off_wait_lamp
 shutdown_switch
 turn_on_fault_lamp

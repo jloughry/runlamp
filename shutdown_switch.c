@@ -1,6 +1,6 @@
-// If you want to run this programme from /etc/rc.d/ then it can't
-// be named anything that has an underscore in the name or it won't
-// work; instead, the programme is named runlamp.
+// If you want to run this programme directly from /etc/rc.d/
+// then it can't be named anything that has an underscore in
+// the name or it won't work (because reasons).
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,28 +13,21 @@
 #define SWITCH_OPEN 1
 #define SWITCH_CLOSED 0
 
-#define FLASH_RATE 500000 // microseconds; half a second
-
-/* Global because this is a simple programme; there's no need to make it
-   more complicated by passing handle around as an explicit parameter. */
-
-gpio_handle_t handle;
-
-void start_flashing_the_WAIT_light(void);
-
 int main(void) {
+    gpio_handle_t handle;
+
     handle = gpio_open(0);
     if (GPIO_INVALID_HANDLE == handle) {
         err(1, "gpio_open() failed");
     }
 
-    // Switches without a pull-up resistor are flaky.
+    // External switches without a pull-up resistor are flaky.
     gpio_pin_input(handle, SHUTDOWN_SW);
     gpio_pin_pullup(handle, SHUTDOWN_SW);
 
-    // This one is the LED.
+    // This pin is the LED.
     gpio_pin_output(handle, WAIT);
-    gpio_pin_low(handle, WAIT); // Turn the WAIT lamp off to begin with.
+    gpio_pin_low(handle, WAIT); // Begin with he WAIT lamp off.
 
     gpio_value_t switch_state = 0;
 
@@ -47,10 +40,11 @@ int main(void) {
             case SWITCH_OPEN:
                 break;
             case SWITCH_CLOSED:
-                system ("/sbin/shutdown -h now"); // do this first, because
-                start_flashing_the_WAIT_light(); // never returns
+                gpio_pin_high(handle, WAIT); // Turn on WAIT lamp.
+                system ("/sbin/shutdown -h now");
                 break;
             default:
+                // FIXME: This really ought to go to syslog(3).
                 printf ("Unknown switch state: %d\n", switch_state);
                 break;
         }
@@ -60,17 +54,5 @@ int main(void) {
     gpio_close(handle);
 
     return(EXIT_SUCCESS);
-}
-
-void start_flashing_the_WAIT_light(void) {
-    const int flash_rate = 333333; // microseconds
-
-    for (;;) {
-        gpio_pin_high(handle, WAIT);
-        usleep(flash_rate);
-        gpio_pin_low(handle, WAIT);
-        usleep(flash_rate);
-    }
-    // At least for now, this function never returns.
 }
 
