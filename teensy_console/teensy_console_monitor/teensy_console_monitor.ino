@@ -11,6 +11,8 @@
 // Function prototypes.
 void turn_LEDs_on(void);
 void turn_LEDs_off(void);
+void turn_MOSFET_on(void);
+void turn_MOSFET_off(void);
 void check_for_overflow_of_string(void);
 void update_state_machine(void);
 
@@ -27,16 +29,20 @@ enum states {
   third_target_seen,  // Looking for a blank line, i.e., "\r\n".
 } state = initial_state;
 
-const int LED_1 = 2;  // external LED connected to pin 2
-const int LED_2 = 13; // in-built LED
+const int LED_1 = 2;   // external LED connected to pin 2
+const int LED_2 = 13;  // in-built LED
+const int MOSFET = 12; // MOSFET power controller on pin 12
 
 // This function is predefined by Arduino.
 void setup() {
   pinMode(LED_1, OUTPUT);
   pinMode(LED_2, OUTPUT);
+  pinMode(MOSFET, OUTPUT);
+
   UART.begin(115200); // Set the speed to 115,200 bits per second (8,N,1).
   string[i] = '\0';
   turn_LEDs_on();
+  turn_MOSFET_on();
 }
 
 // This function is predefined by Arduino.
@@ -65,6 +71,14 @@ void turn_LEDs_off(void) {
   digitalWrite(LED_2, LOW);
 }
 
+void turn_MOSFET_on(void) {
+  digitalWrite(MOSFET, HIGH);
+}
+
+void turn_MOSFET_off(void) {
+  digitalWrite(MOSFET, LOW);
+}
+
 void check_for_overflow_of_string(void) {
   if (i > max_string_length - 1) {
     i = 0;
@@ -91,6 +105,7 @@ void update_state_machine(void) {
       if (!strcmp(string, "\r\n")) {
         state = third_target_seen;
         turn_LEDs_off();
+        turn_MOSFET_off();
       }
       else {
         state = initial_state;
@@ -99,6 +114,7 @@ void update_state_machine(void) {
     case third_target_seen:
       state = initial_state;
       turn_LEDs_on();
+      turn_MOSFET_on();
       break;
     default:
       state = initial_state;
