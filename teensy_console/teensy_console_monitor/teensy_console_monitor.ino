@@ -71,11 +71,11 @@ void turn_LEDs_off(void) {
   digitalWrite(LED_2, LOW);
 }
 
-void turn_MOSFET_on(void) {
+void turn_MOSFET_off(void) {
   digitalWrite(MOSFET, HIGH);
 }
 
-void turn_MOSFET_off(void) {
+void turn_MOSFET_on(void) {
   digitalWrite(MOSFET, LOW);
 }
 
