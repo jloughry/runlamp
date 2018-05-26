@@ -105,18 +105,16 @@ void update_state_machine(void) {
       if (!strcmp(string, "\r\n")) {
         state = third_target_seen;
         turn_LEDs_off();
-        turn_MOSFET_off();
+        turn_MOSFET_off(); // Turn off power to the computer.
       }
       else {
         state = initial_state;
       }
       break;
-    case third_target_seen:
-      state = initial_state;
-      turn_LEDs_on();
-      turn_MOSFET_on();
+    case third_target_seen:      // Stay in this state forever,
+      state = third_target_seen; // or until the power goes away.
       break;
-    default:
+    default: // (This ought never to happen.)
       state = initial_state;
       break;
   }
