@@ -11,8 +11,8 @@
 // Function prototypes.
 void turn_LEDs_on(void);
 void turn_LEDs_off(void);
-void turn_MOSFET_on(void);
-void turn_MOSFET_off(void);
+void turn_relay_on(void);
+void turn_relay_off(void);
 void check_for_overflow_of_string(void);
 void update_state_machine(void);
 
@@ -31,18 +31,18 @@ enum states {
 
 const int LED_1 = 2;   // external LED connected to pin 2
 const int LED_2 = 13;  // in-built LED
-const int MOSFET = 12; // MOSFET power controller on pin 12
+const int relay = 12; // relay power controller on pin 12
 
 // This function is predefined by Arduino.
 void setup() {
   pinMode(LED_1, OUTPUT);
   pinMode(LED_2, OUTPUT);
-  pinMode(MOSFET, OUTPUT);
+  pinMode(relay, OUTPUT);
 
   UART.begin(115200); // Set the speed to 115,200 bits per second (8,N,1).
   string[i] = '\0';
   turn_LEDs_on();
-  turn_MOSFET_on();
+  turn_relay_on();
 }
 
 // This function is predefined by Arduino.
@@ -71,12 +71,12 @@ void turn_LEDs_off(void) {
   digitalWrite(LED_2, LOW);
 }
 
-void turn_MOSFET_off(void) {
-  digitalWrite(MOSFET, HIGH);
+void turn_relay_off(void) {
+  digitalWrite(relay, LOW);
 }
 
-void turn_MOSFET_on(void) {
-  digitalWrite(MOSFET, LOW);
+void turn_relay_on(void) {
+  digitalWrite(relay, HIGH);
 }
 
 void check_for_overflow_of_string(void) {
@@ -105,7 +105,7 @@ void update_state_machine(void) {
       if (!strcmp(string, "\r\n")) {
         state = third_target_seen;
         turn_LEDs_off();
-        turn_MOSFET_off(); // Turn off power to the computer.
+        turn_relay_off(); // Turn off power to the computer.
       }
       else {
         state = initial_state;
